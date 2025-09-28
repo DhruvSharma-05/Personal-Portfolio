@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhruv Sharma - Web Analyst & Data Science Enthusiast</title>
+    <meta name="description" content="Computer Science student at NMIMS Chandigarh specializing in data analytics and web development">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom CSS - Single consolidated file -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+</head>
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="logo-circle">
+                    <span>DS</span>
+                </div>
+            </div>
+            <div class="loading-text">
+                <span class="loading-char">L</span>
+                <span class="loading-char">o</span>
+                <span class="loading-char">a</span>
+                <span class="loading-char">d</span>
+                <span class="loading-char">i</span>
+                <span class="loading-char">n</span>
+                <span class="loading-char">g</span>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home" class="logo-link">
+                    <div class="logo-icon">DS</div>
+                    <div class="logo-text">
+                        <span class="logo-name">Dhruv</span>
+                        <span class="logo-surname">Sharma</span>
+                    </div>
+                </a>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link active">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#experience" class="nav-link">Experience</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#projects" class="nav-link">Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#design" class="nav-link">Design</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#skills" class="nav-link">Skills</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <a href="#contact" class="cta-button">
+                    <span>Hire Me</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Enhanced Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <div class="hero-text" data-aos="fade-up" data-aos-delay="200">
+                        <div class="hero-greeting">
+                            <span class="greeting-icon">👋</span>
+                            <span class="greeting-text">Welcome to my portfolio</span>
+                        </div>
+                        
+                        <h1 class="hero-title">
+                            <span class="title-line">Hi, I'm</span>
+                            <span class="title-name">Dhruv Sharma</span>
+                            <span class="title-role" id="typingText">Web Analyst</span>
+                        </h1>
+                        
+                        <p class="hero-description">
+                            Computer Science student at <span class="highlight">SVKM's NMIMS Chandigarh</span>, 
+                            passionate about transforming data into actionable insights and building innovative data solutions.
+                        </p>
+                        
+                        <div class="hero-buttons">
+                            <a href="#projects" class="btn btn-primary">
+                                <i class="fas fa-rocket"></i>
+                                <span>View My Work</span>
+                            </a>
+                            <a href="#contact" class="btn btn-outline">
+                                <i class="fas fa-envelope"></i>
+                                <span>Get In Touch</span>
+                            </a>
+                        </div>
+                        
+                        <div class="hero-stats">
+                            <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+                                <div class="stat-number" data-count="4" data-suffix="+">0</div>
+                                <div class="stat-label">Projects</div>
+                            </div>
+                            <div class="stat-item" data-aos="fade-up" data-aos-delay="500">
+                                <div class="stat-number" data-count="7" data-suffix="+">0</div>
+                                <div class="stat-label">Certifications</div>
+                            </div>
+                            <div class="stat-item" data-aos="fade-up" data-aos-delay="600">
+                                <div class="stat-number" data-count="1">0</div>
+                                <div class="stat-label">Hackathon Win</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-visual" data-aos="fade-left" data-aos-delay="300">
+                        <div class="hero-code-display">
+                            <div class="code-window">
+                                <div class="code-header">
+                                    <div class="code-dots">
+                                        <span class="dot red"></span>
+                                        <span class="dot yellow"></span>
+                                        <span class="dot green"></span>
+                                    </div>
+                                    <div class="code-title">portfolio.py</div>
+                                </div>
+                                <div class="code-content">
+                                    <div class="code-line">
+                                        <span class="code-number">1</span>
+                                        <span class="code-text"><span class="keyword">class</span> <span class="class-name">Developer</span>:</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-number">2</span>
+                                        <span class="code-text">    <span class="keyword">def</span> <span class="function">__init__</span>(self):</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-number">3</span>
+                                        <span class="code-text">        self.name = <span class="string">"Dhruv Sharma"</span></span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-number">4</span>
+                                        <span class="code-text">        self.role = <span class="string">"Web Analyst"</span></span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-number">5</span>
+                                        <span class="code-text">        self.skills = [<span class="string">"Python"</span>, <span class="string">"ML"</span>, <span class="string">"PowerBI"</span>]</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="code-number">6</span>
+                                        <span class="code-text">        self.passion = <span class="string">"Data Science"</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="floating-elements">
+                                <div class="floating-icon" style="--delay: 0s">
+                                    <i class="fab fa-python"></i>
+                                </div>
+                                <div class="floating-icon" style="--delay: 1s">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="floating-icon" style="--delay: 2s">
+                                    <i class="fab fa-js-square"></i>
+                                </div>
+                                <div class="floating-icon" style="--delay: 3s">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scroll-indicator" data-aos="fade-up" data-aos-delay="800">
+                    <div class="scroll-mouse">
+                        <div class="scroll-wheel"></div>
+                    </div>
+                    <span class="scroll-text">Scroll Down</span>
+                </div>
+            </div>
+            
+            <!-- Background Elements - Single Set Only -->
+            <div class="hero-bg-elements">
+                <div class="bg-circle circle-1"></div>
+                <div class="bg-circle circle-2"></div>
+                <div class="bg-circle circle-3"></div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" id="about">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">
+                        About <span class="gradient-text">Me</span>
+                    </h2>
+                    <div class="section-subtitle">
+                        Passionate developer with a love for creating amazing digital experiences
+                    </div>
+                </div>
+                
+                <div class="about-content">
+                    <div class="about-text" data-aos="fade-right">
+                        <div class="about-description">
+                            <p>
+                                I'm a passionate Computer Science student at <span class="highlight">SVKM's NMIMS Chandigarh</span>, 
+                                specializing in data analytics and web development. With hands-on experience 
+                                as a <span class="highlight">Web Analyst at Accosoft India</span>, I've developed expertise in creating 
+                                interactive dashboards and automating data processes.
+                            </p>
+                            <p>
+                                My journey in technology is driven by curiosity and a passion for problem-solving. 
+                                I love transforming complex data into meaningful insights and building user-centric solutions.
+                            </p>
+                        </div>
+                        
+                        <div class="about-details">
+                            <div class="detail-card" data-aos="fade-up" data-aos-delay="100">
+                                <div class="detail-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <h3>Computer Science Bachelors</h3>
+                                    <p>SVKM's NMIMS Chandigarh</p>
+                                    <span>Aug 2022 - July 2026</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-card" data-aos="fade-up" data-aos-delay="200">
+                                <div class="detail-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <h3>Based in</h3>
+                                    <p>📍 Panchkula, Haryana, India</p>
+                                    <span>Open to remote opportunities</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-card" data-aos="fade-up" data-aos-delay="300">
+                                <div class="detail-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <h3>Focus Areas</h3>
+                                    <p>Data Analytics • Machine Learning • UX/UI Design</p>
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-visual" data-aos="fade-left">
+                        <div class="visual-container">
+                            <div class="visual-card">
+                                <div class="card-content">
+                                    <div class="profile-image">
+                                        <i class="fas fa-user-graduate"></i>
+                                    </div>
+                                    <h3>Ready to Collaborate</h3>
+                                    <div class="skill-tags">
+                                        <span class="skill-tag">Python</span>
+                                        <span class="skill-tag">Data Science</span>
+                                        <span class="skill-tag">Web Dev</span>
+                                        <span class="skill-tag">Power BI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section class="experience" id="experience">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">
+                        My <span class="gradient-text">Experience</span>
+                    </h2>
+                    <div class="section-subtitle">
+                        A journey of continuous learning, growth, and impactful contributions
+                    </div>
+                </div>
+                
+                <div class="experience-grid" id="timeline">
+                    <!-- Experience cards will be generated dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects" id="projects">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">
+                        Featured <span class="gradient-text">Projects</span>
+                    </h2>
+                    <div class="section-subtitle">
+                        Showcasing my expertise in data science, machine learning, and web development
+                    </div>
+                </div>
+                
+                <div class="projects-filter" data-aos="fade-up" data-aos-delay="100">
+                    <button class="filter-btn active" data-filter="all">All Projects</button>
+                    <button class="filter-btn" data-filter="machine-learning">Machine Learning</button>
+                    <button class="filter-btn" data-filter="data-analytics">Data Analytics</button>
+                    <button class="filter-btn" data-filter="web-development">Web Development</button>
+                </div>
+                
+                <div class="projects-grid" id="projectsGrid">
+                    <!-- Projects will be dynamically generated -->
+                </div>
+                
+                <div class="achievements-section" data-aos="fade-up">
+                    <h3 class="achievements-title">
+                        🏆 <span class="gradient-text">Achievements</span>
+                    </h3>
+                    <div class="achievements-grid" id="achievementsGrid">
+                        <!-- Achievements will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Design Portfolio Section -->
+        <section class="design-portfolio" id="design">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">
+                        Design <span class="gradient-text">Portfolio</span>
+                    </h2>
+                    <div class="section-subtitle">
+                        Creative solutions through thoughtful design and user-centered approach
+                    </div>
+                </div>
+                
+                <div class="design-stats" data-aos="fade-up" data-aos-delay="100">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="stat-number" data-count="7">0</div>
+                        <div class="stat-label">Design Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-number" data-count="3">0</div>
+                        <div class="stat-label">Years Experience</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="stat-number" data-count="2">0</div>
+                        <div class="stat-label">Event Brandings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-number" data-count="1">0</div>
+                        <div class="stat-label">Hackathon Win</div>
+                    </div>
+                </div>
+                
+                <div class="design-projects-grid" id="designProjectsGrid">
+                    <!-- Design projects will be dynamically generated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="skills" id="skills">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">
+                        Skills & <span class="gradient-text">Technologies</span>
+                    </h2>
+                    <div class="section-subtitle">
+                        A comprehensive toolkit for building data-driven solutions and modern web applications
+                    </div>
+                </div>
+                
+                <div class="skills-grid" id="skillsGrid">
+                    <!-- Skills will be dynamically generated -->
+                </div>
+                
+                <div class="certifications-section" data-aos="fade-up">
+                    <h3 class="certifications-title">
+                        🎓 <span class="gradient-text">Certifications</span>
+                    </h3>
+                    <div class="certifications-grid" id="certificationsGrid">
+                        <!-- Certifications will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up">
+                    <h2 class="section-title">
+                        Get In <span class="gradient-text">Touch</span>
+                    </h2>
+                    <div class="section-subtitle">
+                        Ready to collaborate? Let's discuss how we can work together to bring your ideas to life.
+                    </div>
+                </div>
+                
+                <div class="contact-content">
+                    <div class="contact-info" data-aos="fade-right">
+                        <div class="contact-description">
+                            <p>
+                                I'm always interested in new opportunities and collaborations. Whether you have a project in mind, 
+                                want to discuss potential partnerships, or just want to say hello, I'd love to hear from you!
+                            </p>
+                        </div>
+                        
+                        <div class="contact-methods">
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Email</h3>
+                                    <a href="mailto:dhruv.sharma1592@gmail.com">dhruv.sharma1592@gmail.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Phone</h3>
+                                    <a href="tel:+919855560324">+91 9855560324</a>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-card">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-details">
+                                    <h3>Location</h3>
+                                    <span>📍 Panchkula, Haryana, India</span>
+                                    <small>Open to remote opportunities</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="social-links">
+                            <h3>Connect With Me</h3>
+                            <div class="social-grid">
+                                <a href="https://www.linkedin.com/in/dhruvsharma05/" class="social-link linkedin">
+                                    <div class="social-icon">
+                                        <i class="fab fa-linkedin"></i>
+                                    </div>
+                                    <div class="social-content">
+                                        <h4>LinkedIn Profile</h4>
+                                        <p>Connect with me professionally</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                
+                                <a href="https://github.com/DhruvSharma-05" class="social-link github">
+                                    <div class="social-icon">
+                                        <i class="fab fa-github"></i>
+                                    </div>
+                                    <div class="social-content">
+                                        <h4>GitHub Profile</h4>
+                                        <p>Check out my code repositories</p>
+                                    </div>
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+<form class="contact-form" id="contactForm">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="user_name">
+                <i class="fas fa-user"></i>
+                Name
+            </label>
+            <input type="text" id="user_name" name="user_name" placeholder="Your full name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="user_email">
+                <i class="fas fa-envelope"></i>
+                Email
+            </label>
+            <input type="email" id="user_email" name="user_email" placeholder="your@email.com" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label for="subject">
+            <i class="fas fa-tag"></i>
+            Subject
+        </label>
+        <input type="text" id="subject" name="subject" placeholder="What's this about?" required>
+    </div>
+    
+    <div class="form-group">
+        <label for="message">
+            <i class="fas fa-comment-alt"></i>
+            Message
+        </label>
+        <textarea id="message" name="message" rows="6" placeholder="Tell me about your project or just say hello..." required></textarea>
+    </div>
+    
+    <button type="submit" class="btn btn-primary form-submit">
+        <i class="fas fa-rocket"></i>
+        <span>Send Message</span>
+    </button>
+</form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">DS</div>
+                        <div class="logo-text">
+                            <span class="logo-name">Dhruv</span>
+                            <span class="logo-surname">Sharma</span>
+                        </div>
+                    </div>
+                    <p>Web Analyst & Data Science Enthusiast building innovative solutions with modern technologies.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#experience">Experience</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-connect">
+                    <h3>Connect</h3>
+                    <div class="footer-social">
+                        <a href="https://www.linkedin.com/in/dhruvsharma05/" class="social-icon" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/DhruvSharma-05" class="social-icon" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="mailto:dhruv.sharma1592@gmail.com" class="social-icon">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Dhruv Sharma. All rights reserved. Built with ❤️ and vanilla JS</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <!-- Typing Element Debug Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typingElement = document.getElementById('typingText');
+        if (typingElement) {
+            console.log('✅ Typing element found and ready');
+            typingElement.textContent = 'Web Analyst';
+        } else {
+            console.error('❌ Typing element NOT found');
+        }
+    });
+    </script>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="js/data.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
