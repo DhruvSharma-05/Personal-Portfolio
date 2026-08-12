@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   PALETTE
+   Dark-first. The light theme swaps the same semantic slots so every component
+   can style against `--color-*` and never branch on the theme itself.
+   ========================================================================== */
+
+:root {
+  --ink: #09090b;
+  --surface: #101014;
+  --surface-2: #17171d;
+  --line: #26262f;
+  --line-strong: #3a3a46;
+  --text: #fafafa;
+  --muted: #a1a1ac;
+  /* `accent` is the text-safe tone; `accent-fill` is the chip/button surface.
+     On dark they can be the same colour — on light they cannot, because lime
+     type on a near-white page is unreadable. */
+  --accent: #d6ff3f;
+  --accent-fill: #d6ff3f;
+  --accent-ink: #0a0a0b;
+  --accent-soft: rgba(214, 255, 63, 0.12);
+  --violet: #7c5cff;
+  --violet-soft: rgba(124, 92, 255, 0.14);
+  --grain-opacity: 0.035;
+}
+
+:root[data-theme="light"] {
+  --ink: #fbfbf8;
+  --surface: #ffffff;
+  --surface-2: #f3f3ef;
+  --line: #e4e4dd;
+  --line-strong: #c9c9c0;
+  --text: #0a0a0b;
+  --muted: #56565f;
+  /* 6.0:1 against --ink, so accent type still passes WCAG AA. */
+  --accent: #4a6b07;
+  --accent-fill: #c2ee1f;
+  --accent-ink: #0a0a0b;
+  --accent-soft: rgba(160, 200, 20, 0.16);
+  --violet: #5b32f0;
+  --violet-soft: rgba(91, 50, 240, 0.1);
+  --grain-opacity: 0.02;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fill: var(--accent-fill);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-violet: var(--violet);
+  --color-violet-soft: var(--violet-soft);
+
+  --font-display: var(--font-display), "Bricolage Grotesque", system-ui, sans-serif;
+  --font-sans: var(--font-sans-var), "Inter", system-ui, sans-serif;
+  --font-mono: var(--font-mono-var), "JetBrains Mono", ui-monospace, monospace;
+
+  /* A fluid display scale. Bold means big, but never wider than the viewport. */
+  --text-display-sm: clamp(2.25rem, 6vw, 3.5rem);
+  --text-display: clamp(3rem, 11vw, 8rem);
+  --text-display-lg: clamp(3.5rem, 15vw, 12rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset for the fixed header when jumping to #anchors. */
+    scroll-padding-top: 6rem;
+    background-color: var(--color-ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    /* The fill tone, not the text tone — selected text sits *on* this. */
+    background-color: var(--color-accent-fill);
+    color: var(--color-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Only the fallback for browsers without :focus-visible support. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 99px;
+    border: 3px solid var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
+  }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+@utility text-balance-none {
+  text-wrap: initial;
+}
+
+/* Film grain over the whole page. Pure CSS — no image request. */
+@utility grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 8s steps(10) infinite;
+}
+
+/* An accent underline that draws on hover. */
+@utility link-underline {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s var(--ease-out-expo);
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1.5px;
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+
+@keyframes grain-shift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  30% {
+    transform: translate(3%, -15%);
+  }
+  50% {
+    transform: translate(12%, 9%);
+  }
+  70% {
+    transform: translate(9%, 4%);
+  }
+  90% {
+    transform: translate(-1%, 7%);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  /* The track renders its children twice, so -50% is one seamless loop. */
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+  66% {
+    transform: translate(-5%, 4%) scale(0.95);
+  }
+}
+
+/* ==========================================================================
+   MOTION PREFERENCES
+   Honoured globally so no component has to remember to.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain {
+    animation: none;
+  }
+}
+
+@media print {
+  .grain,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+}
