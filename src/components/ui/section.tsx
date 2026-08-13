@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { sections } from "@/content/profile";
 import { Reveal } from "./reveal";
 
 export function Section({
@@ -14,13 +15,25 @@ export function Section({
     <section
       id={id}
       aria-labelledby={`${id}-heading`}
-      className={`relative scroll-mt-24 px-6 py-24 sm:px-10 md:py-36 ${className}`}
+      className={`relative scroll-mt-24 border-t border-line px-6 py-20 sm:px-10 md:py-32 ${className}`}
     >
+      {/* The section boundary reads as a measured edge rather than a plain rule. */}
+      <span
+        aria-hidden="true"
+        className="tick-rule absolute inset-x-0 top-0 h-1.5 opacity-40"
+      />
       <div className="mx-auto w-full max-w-6xl">{children}</div>
     </section>
   );
 }
 
+/**
+ * Plate header — the label a panel carries above the instrument it describes.
+ *
+ * `[04]` bracketed index, a ruled span, and the plate's position in the run on
+ * the right. The title is set in expanded Archivo; `accent` is the one word
+ * that takes the signal colour.
+ */
 export function SectionHeader({
   id,
   index,
@@ -31,25 +44,31 @@ export function SectionHeader({
   id: string;
   index: string;
   title: string;
-  /** Rendered in the accent colour on its own line. */
+  /** Rendered in the accent colour, on the same line. */
   accent?: string;
   lede?: string;
 }) {
   return (
-    <header className="mb-16 md:mb-24">
+    <header className="mb-14 md:mb-20">
       <Reveal direction="up">
-        <div className="mb-6 flex items-center gap-4">
-          <span className="font-mono text-xs tracking-[0.25em] text-accent">
+        <div className="flex items-center gap-4">
+          <span className="type-label rounded-sharp border border-accent/40 px-2 py-1 text-accent">
             {index}
           </span>
-          <span className="h-px flex-1 bg-line" />
+          <span
+            aria-hidden="true"
+            className="tick-rule h-1.5 flex-1 opacity-60"
+          />
+          <span className="type-label whitespace-nowrap text-muted">
+            Plate {index}/{String(sections.length).padStart(2, "0")}
+          </span>
         </div>
       </Reveal>
 
       <Reveal direction="up" delay={0.06}>
         <h2
           id={`${id}-heading`}
-          className="text-[length:var(--text-display-sm)] uppercase"
+          className="type-wide mt-7 text-[length:var(--text-display-sm)] uppercase"
         >
           {title}
           {accent ? (
@@ -63,7 +82,8 @@ export function SectionHeader({
 
       {lede ? (
         <Reveal direction="up" delay={0.12}>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+          {/* 65ch keeps the measure inside the readable 45–90 character band. */}
+          <p className="mt-5 max-w-[58ch] text-lg leading-relaxed text-muted">
             {lede}
           </p>
         </Reveal>

@@ -14,10 +14,13 @@ export function CountUp({
   to,
   suffix = "",
   duration = 1400,
+  pad = 0,
 }: {
   to: number;
   suffix?: string;
   duration?: number;
+  /** Zero-pad to this many digits, so a readout never changes width. */
+  pad?: number;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "0px 0px -60px 0px" });
@@ -48,7 +51,7 @@ export function CountUp({
 
   return (
     <span ref={ref}>
-      {display}
+      {String(display).padStart(pad, "0")}
       {suffix}
     </span>
   );

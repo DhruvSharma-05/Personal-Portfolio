@@ -1,13 +1,14 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { designProjects } from "@/content/design";
 import { DriveIcon, FigmaIcon } from "@/components/ui/brand-icons";
 import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
+import { Panel, Tag } from "@/components/ui/panel";
 import { Section, SectionHeader } from "@/components/ui/section";
 
 export function Design() {
   return (
-    <Section id="design" className="border-t border-line">
+    <Section id="design">
       <SectionHeader
         id="design"
         index="04"
@@ -16,48 +17,47 @@ export function Design() {
         lede="Interface and identity work — the other half of making data land."
       />
 
-      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {designProjects.map((project, i) => (
-          <Reveal key={project.id} direction="up" delay={(i % 3) * 0.08}>
-            <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-colors duration-500 hover:border-accent/50">
-              {/* Type-led cover instead of the old empty <img> placeholders. */}
-              <div className="relative flex aspect-[4/3] flex-col justify-between overflow-hidden border-b border-line bg-surface-2 p-6">
+          <Reveal key={project.id} direction="up" delay={(i % 3) * 0.06}>
+            <Panel as="article" className="flex h-full flex-col">
+              {/* Type-led cover. The drafting grid stands in for the artwork —
+                  honest about there being no screenshot, rather than an empty
+                  <img> placeholder. */}
+              <div className="relative flex aspect-[4/3] flex-col justify-between overflow-hidden border-b border-line bg-surface-2 p-5">
                 <div
                   aria-hidden="true"
-                  className="absolute inset-0 opacity-[0.07] transition-transform duration-700 group-hover:scale-110"
-                  style={{
-                    backgroundImage:
-                      "radial-gradient(circle at 1px 1px, var(--color-text) 1px, transparent 0)",
-                    backgroundSize: "16px 16px",
-                  }}
+                  className="grid-field absolute inset-0"
+                  style={{ ["--cell" as string]: "1.5rem" }}
                 />
-                <div className="relative flex items-center justify-between">
-                  <span className="grid size-11 place-items-center rounded-xl border border-line bg-surface text-accent">
-                    <Icon name={project.icon} className="size-5" />
+                <div className="relative flex items-start justify-between">
+                  <span className="grid size-10 place-items-center rounded-sharp border border-line bg-surface text-accent">
+                    <Icon name={project.icon} className="size-4.5" />
                   </span>
                   <span className="font-mono text-xs text-muted">
                     {project.year}
                   </span>
                 </div>
-                <p className="relative font-display text-xl font-bold uppercase leading-tight">
+                <p className="type-wide-md relative text-xl leading-tight uppercase">
                   {project.type}
                 </p>
               </div>
 
-              <div className="flex flex-1 flex-col p-6">
-                <h3 className="font-display text-xl font-bold">
-                  {project.title}
-                </h3>
+              <div className="flex flex-1 flex-col p-5">
+                <h3 className="type-panel text-xl">{project.title}</h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-muted">
                   {project.description}
                 </p>
 
                 <ul className="mt-5 space-y-2">
                   {project.features.slice(0, 3).map((feature) => (
-                    <li key={feature} className="flex gap-2.5 text-sm text-muted">
+                    <li
+                      key={feature}
+                      className="flex gap-2.5 text-sm text-muted"
+                    >
                       <span
                         aria-hidden="true"
-                        className="mt-2 size-1 shrink-0 rounded-full bg-accent-fill"
+                        className="mt-2 size-1 shrink-0 bg-accent-fill"
                       />
                       <span className="leading-relaxed">{feature}</span>
                     </li>
@@ -66,17 +66,10 @@ export function Design() {
 
                 <ul className="mt-5 flex flex-wrap gap-2">
                   {project.tools.slice(0, 3).map((tool) => (
-                    <li
-                      key={tool}
-                      className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted"
-                    >
-                      {tool}
-                    </li>
+                    <Tag key={tool}>{tool}</Tag>
                   ))}
                   {project.tools.length > 3 ? (
-                    <li className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted">
-                      +{project.tools.length - 3}
-                    </li>
+                    <Tag>+{project.tools.length - 3}</Tag>
                   ) : null}
                 </ul>
 
@@ -98,19 +91,19 @@ export function Design() {
                         {project.linkLabel}
                         <span className="sr-only"> — {project.title}</span>
                       </span>
-                      <ArrowUpRight
-                        className="size-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                      <ArrowRight
+                        className="size-4 transition-transform duration-200 group-hover/btn:translate-x-1"
                         aria-hidden="true"
                       />
                     </a>
                   ) : (
-                    <p className="font-mono text-xs text-muted">
-                      Case study available on request
+                    <p className="type-label text-muted">
+                      Case study on request
                     </p>
                   )}
                 </div>
               </div>
-            </article>
+            </Panel>
           </Reveal>
         ))}
       </div>

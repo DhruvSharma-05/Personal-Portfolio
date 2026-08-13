@@ -1,115 +1,112 @@
-import { Trophy } from "lucide-react";
 import { achievements, experiences } from "@/content/experience";
 import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
+import { Panel, PanelHead, Tag } from "@/components/ui/panel";
 import { Section, SectionHeader } from "@/components/ui/section";
 
 export function Experience() {
   return (
-    <Section id="experience" className="border-t border-line">
+    <Section id="experience">
       <SectionHeader
         id="experience"
         index="02"
-        title="Where I've"
+        title="Where I’ve"
         accent="worked"
         lede="Three roles, one thread: take something manual and make it repeatable."
       />
 
       <ol className="relative space-y-4">
-        {/* The rail sits behind the cards and stops at the last marker. */}
+        {/* The rail runs behind the entries and stops at the last marker. */}
         <span
           aria-hidden="true"
-          className="absolute top-8 bottom-8 left-[1.4rem] hidden w-px bg-line md:block"
+          className="absolute top-6 bottom-6 left-6 hidden w-px bg-line md:block"
         />
 
         {experiences.map((exp, i) => (
-          <Reveal as="li" key={exp.id} direction="up" delay={i * 0.08}>
+          <Reveal as="li" key={exp.id} direction="up" delay={i * 0.06}>
             <div className="relative md:pl-20">
+              {/* Position marker: entry number over the rail, icon beside it. */}
               <span
                 aria-hidden="true"
-                className="absolute top-8 left-0 hidden size-12 place-items-center rounded-full border border-line bg-surface-2 text-accent md:grid"
+                className="absolute top-5 left-0 hidden size-12 flex-col items-center justify-center gap-1 rounded-sharp border border-line bg-surface-2 md:flex"
               >
-                <Icon name={exp.icon} className="size-5" />
+                <Icon name={exp.icon} className="size-4 text-accent" />
+                <span className="font-mono text-[0.6rem] tracking-widest text-muted">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </span>
 
-              <article className="group rounded-2xl border border-line bg-surface p-6 transition-colors duration-500 hover:border-accent/50 sm:p-8">
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div>
-                    <span className="mb-3 inline-block rounded-full border border-line bg-surface-2 px-3 py-1 font-mono text-[0.65rem] tracking-[0.15em] text-muted uppercase">
-                      {exp.kind}
-                    </span>
-                    <h3 className="font-display text-2xl font-bold sm:text-3xl">
-                      {exp.title}
-                    </h3>
-                    <p className="mt-1 text-accent">{exp.company}</p>
-                    <p className="mt-0.5 text-sm text-muted">{exp.location}</p>
-                  </div>
-                  <p className="font-mono text-xs whitespace-nowrap text-muted">
-                    {exp.duration}
-                  </p>
+              <Panel>
+                <PanelHead label={exp.kind} trailing={exp.duration} />
+
+                <div className="p-5 sm:p-7">
+                  <h3 className="type-wide-md text-2xl sm:text-3xl">
+                    {exp.title}
+                  </h3>
+                  <p className="mt-2 text-accent">{exp.company}</p>
+                  <p className="mt-0.5 text-sm text-muted">{exp.location}</p>
+
+                  <ul className="mt-6 space-y-3">
+                    {exp.highlights.map((point) => (
+                      <li key={point} className="flex gap-3 text-muted">
+                        <span
+                          aria-hidden="true"
+                          className="mt-2.5 size-1.5 shrink-0 bg-accent-fill"
+                        />
+                        <span className="max-w-[68ch] leading-relaxed">
+                          {point}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <ul className="mt-7 flex flex-wrap gap-2">
+                    {exp.technologies.map((tech) => (
+                      <Tag key={tech}>{tech}</Tag>
+                    ))}
+                  </ul>
                 </div>
-
-                <ul className="mt-6 space-y-3">
-                  {exp.highlights.map((point) => (
-                    <li key={point} className="flex gap-3 text-muted">
-                      <span
-                        aria-hidden="true"
-                        className="mt-2.5 size-1.5 shrink-0 rounded-full bg-accent-fill"
-                      />
-                      <span className="leading-relaxed">{point}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <ul className="mt-6 flex flex-wrap gap-2">
-                  {exp.technologies.map((tech) => (
-                    <li
-                      key={tech}
-                      className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted"
-                    >
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </article>
+              </Panel>
             </div>
           </Reveal>
         ))}
       </ol>
 
-      <div className="mt-20">
+      <div className="mt-16">
         <Reveal direction="up">
-          <h3 className="mb-8 flex items-center gap-3 font-display text-xl font-bold uppercase tracking-tight">
-            <Trophy className="size-5 text-accent" aria-hidden="true" />
-            Recognition
-          </h3>
+          <div className="mb-8 flex items-center gap-4">
+            <h3 className="type-label text-accent">Recognition</h3>
+            <span
+              aria-hidden="true"
+              className="tick-rule h-1.5 flex-1 opacity-60"
+            />
+          </div>
         </Reveal>
 
         <div className="grid gap-4 sm:grid-cols-2">
           {achievements.map((item, i) => (
-            <Reveal key={item.id} direction="up" delay={i * 0.08}>
-              <article className="relative h-full overflow-hidden rounded-2xl border border-accent/30 bg-accent-soft p-6 sm:p-8">
-                <p className="font-mono text-xs tracking-[0.15em] text-accent uppercase">
-                  {item.award} · {item.date}
-                </p>
-                <h4 className="mt-3 font-display text-2xl font-bold">
-                  {item.title}
-                </h4>
-                <p className="mt-1 text-sm text-muted">{item.organization}</p>
-                <p className="mt-4 leading-relaxed text-muted">
-                  {item.description}
-                </p>
-                <ul className="mt-5 flex flex-wrap gap-2">
-                  {item.technologies.map((tech) => (
-                    <li
-                      key={tech}
-                      className="rounded-full border border-line px-3 py-1 font-mono text-xs text-muted"
-                    >
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </article>
+            <Reveal key={item.id} direction="up" delay={i * 0.06}>
+              <Panel className="h-full border-accent/35 bg-accent-soft hover:border-accent/70">
+                <PanelHead
+                  label={item.award}
+                  trailing={item.date}
+                  className="border-accent/25"
+                />
+                <div className="p-5 sm:p-7">
+                  <h4 className="type-wide-md text-2xl">{item.title}</h4>
+                  <p className="mt-1.5 text-sm text-muted">
+                    {item.organization}
+                  </p>
+                  <p className="mt-4 max-w-[62ch] leading-relaxed text-muted">
+                    {item.description}
+                  </p>
+                  <ul className="mt-6 flex flex-wrap gap-2">
+                    {item.technologies.map((tech) => (
+                      <Tag key={tech}>{tech}</Tag>
+                    ))}
+                  </ul>
+                </div>
+              </Panel>
             </Reveal>
           ))}
         </div>

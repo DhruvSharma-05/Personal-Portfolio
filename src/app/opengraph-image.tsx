@@ -19,7 +19,7 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#09090b",
+          background: "#14110e",
           padding: 72,
           fontFamily: "sans-serif",
         }}
@@ -29,9 +29,9 @@ export default function OpengraphImage() {
             style={{
               width: 56,
               height: 56,
-              borderRadius: 999,
-              background: "#d6ff3f",
-              color: "#0a0a0b",
+              borderRadius: 2,
+              background: "#ff6b2c",
+              color: "#14110e",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -41,7 +41,7 @@ export default function OpengraphImage() {
           >
             {profile.initials}
           </div>
-          <div style={{ color: "#a1a1ac", fontSize: 24, letterSpacing: 4 }}>
+          <div style={{ color: "#a89a89", fontSize: 24, letterSpacing: 4 }}>
             PORTFOLIO
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div
             style={{
-              color: "#fafafa",
+              color: "#f4ede3",
               fontSize: 128,
               fontWeight: 800,
               lineHeight: 0.9,
@@ -61,7 +61,7 @@ export default function OpengraphImage() {
           </div>
           <div
             style={{
-              color: "#d6ff3f",
+              color: "#ff6b2c",
               fontSize: 128,
               fontWeight: 800,
               lineHeight: 0.9,
@@ -78,7 +78,7 @@ export default function OpengraphImage() {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "flex-end",
-            color: "#a1a1ac",
+            color: "#a89a89",
             fontSize: 28,
           }}
         >

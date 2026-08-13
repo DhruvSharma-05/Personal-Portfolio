@@ -7,8 +7,13 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowUpRight, Menu, Moon, Sun, X } from "lucide-react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
+import { ArrowRight, Menu, Moon, Sun, X } from "lucide-react";
 import { profile, sections } from "@/content/profile";
 
 /**
@@ -50,7 +55,7 @@ function ThemeToggle({ className = "" }: { className?: string }) {
       type="button"
       onClick={toggle}
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      className={`grid size-10 place-items-center rounded-full border border-line text-muted transition-colors hover:border-accent hover:text-accent ${className}`}
+      className={`grid size-11 place-items-center rounded-sharp border border-line text-muted transition-colors duration-150 hover:border-accent hover:text-accent ${className}`}
     >
       {theme === "light" ? (
         <Sun className="size-4" aria-hidden="true" />
@@ -61,6 +66,50 @@ function ThemeToggle({ className = "" }: { className?: string }) {
   );
 }
 
+/**
+ * Position readout down the left margin — the instrument's own scale.
+ *
+ * Purely decorative: the same destinations are already in the primary nav, so
+ * this is `aria-hidden` and unfocusable rather than a second set of links.
+ * Only shown where there is real gutter to put it in (the content column is
+ * 72rem, so 1440px is the first width with room to spare).
+ */
+function SectionRail({ active }: { active: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      data-print-hide
+      className="fixed top-1/2 left-8 z-40 hidden -translate-y-1/2 min-[1440px]:block"
+    >
+      <div className="relative flex flex-col gap-3 pl-4">
+        <span className="absolute inset-y-1 left-0 w-px bg-line" />
+        {sections.map((section) => {
+          const isActive = active === section.id;
+          return (
+            <span key={section.id} className="flex items-center gap-2">
+              <span
+                className={`h-px transition-all duration-300 ${
+                  isActive ? "w-4 bg-accent-fill" : "w-2 bg-line-strong"
+                }`}
+              />
+              <span
+                // Full `--muted`, not a faded tint: the active step already
+                // reads as active through colour and tick length, so dimming
+                // the rest below AA buys nothing.
+                className={`font-mono text-[0.65rem] tracking-widest transition-colors duration-300 ${
+                  isActive ? "text-accent" : "text-muted"
+                }`}
+              >
+                {section.index}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function SiteNav() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -68,6 +117,9 @@ export function SiteNav() {
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const reduced = useReducedMotion();
+
+  // Drives the progress rule as a motion value, so scrolling never re-renders.
+  const { scrollYProgress } = useScroll();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -103,8 +155,7 @@ export function SiteNav() {
 
       // Near the bottom the last section may never cross the line.
       const atBottom =
-        window.innerHeight + window.scrollY >=
-        document.body.scrollHeight - 2;
+        window.innerHeight + window.scrollY >= document.body.scrollHeight - 2;
       if (atBottom) current = sections[sections.length - 1].id;
 
       // A no-op when unchanged — React bails out of the re-render.
@@ -151,79 +202,92 @@ export function SiteNav() {
     };
   }, [open, close]);
 
+  const activeLabel =
+    sections.find((section) => section.id === active)?.label ?? "Top";
+
   return (
     <>
       <a
         href="#main"
-        className="sr-only rounded-full bg-accent-fill px-5 py-3 font-medium text-accent-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110]"
+        className="sr-only rounded-sharp bg-accent-fill px-5 py-3 font-semibold text-accent-ink focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110]"
       >
         Skip to content
       </a>
 
+      <SectionRail active={active} />
+
       <header
         data-print-hide
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? "border-b border-line bg-ink/80 backdrop-blur-xl"
-            : "border-b border-transparent"
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+          // Solid, not blurred. Frosted glass was the one banned effect, and a
+          // hairline over an opaque ground is truer to the panel language anyway.
+          scrolled ? "border-b border-line bg-ink" : "border-b border-transparent"
         }`}
       >
         <nav
           aria-label="Primary"
-          className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-6 sm:px-10"
+          className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between gap-6 px-6 sm:px-10"
         >
           <a
             href="#top"
             className="group flex items-center gap-3"
             aria-label={`${profile.name} — back to top`}
           >
-            <span className="grid size-9 place-items-center rounded-full bg-accent-fill font-display text-sm font-bold text-accent-ink transition-transform duration-500 group-hover:rotate-[20deg]">
+            <span className="grid size-9 shrink-0 place-items-center rounded-sharp bg-accent-fill font-mono text-xs font-medium tracking-wider text-accent-ink">
               {profile.initials}
             </span>
-            <span className="hidden font-display text-base font-bold tracking-tight sm:block">
-              {profile.firstName}
+            <span className="type-panel hidden text-base sm:block">
+              {profile.firstName}{" "}
               <span className="text-muted">{profile.lastName}</span>
             </span>
           </a>
 
-          <ul className="hidden items-center gap-1 lg:flex">
-            {sections.map((section) => (
-              <li key={section.id}>
-                <a
-                  href={`#${section.id}`}
-                  aria-current={active === section.id ? "true" : undefined}
-                  className={`relative rounded-full px-4 py-2 text-sm transition-colors ${
-                    active === section.id
-                      ? "text-text"
-                      : "text-muted hover:text-text"
-                  }`}
-                >
-                  {active === section.id ? (
-                    <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 -z-10 rounded-full bg-surface-2"
-                      transition={{
-                        type: "spring",
-                        stiffness: 380,
-                        damping: 32,
-                      }}
-                    />
-                  ) : null}
-                  {section.label}
-                </a>
-              </li>
-            ))}
+          <ul className="hidden items-center lg:flex">
+            {sections.map((section) => {
+              const isActive = active === section.id;
+              return (
+                <li key={section.id}>
+                  <a
+                    href={`#${section.id}`}
+                    aria-current={isActive ? "true" : undefined}
+                    className={`type-label relative block px-3.5 py-6 transition-colors duration-150 ${
+                      isActive ? "text-accent" : "text-muted hover:text-text"
+                    }`}
+                  >
+                    {section.label}
+                    {isActive ? (
+                      <motion.span
+                        layoutId="nav-mark"
+                        className="absolute inset-x-2 bottom-5 h-px bg-accent-fill"
+                        transition={{
+                          type: "spring",
+                          stiffness: 420,
+                          damping: 36,
+                        }}
+                      />
+                    ) : null}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="flex items-center gap-2">
+            {/* Live position readout — the header's own instrument face. */}
+            <span
+              aria-hidden="true"
+              className="type-label mr-2 hidden text-muted xl:block"
+            >
+              {activeLabel}
+            </span>
             <ThemeToggle />
             <a
               href="#contact"
-              className="group hidden items-center gap-2 rounded-full bg-accent-fill px-5 py-2.5 text-sm font-semibold text-accent-ink transition-transform duration-300 hover:scale-[1.03] sm:flex"
+              className="group hidden items-center gap-2 rounded-sharp bg-accent-fill px-5 py-3 text-sm font-semibold text-accent-ink transition-opacity duration-150 hover:opacity-90 sm:flex"
             >
               Hire me
-              <ArrowUpRight
-                className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              <ArrowRight
+                className="size-4 transition-transform duration-200 group-hover:translate-x-1"
                 aria-hidden="true"
               />
             </a>
@@ -234,7 +298,7 @@ export function SiteNav() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="grid size-10 place-items-center rounded-full border border-line text-text transition-colors hover:border-accent lg:hidden"
+              className="grid size-11 place-items-center rounded-sharp border border-line text-text transition-colors duration-150 hover:border-accent lg:hidden"
             >
               {open ? (
                 <X className="size-4" aria-hidden="true" />
@@ -244,6 +308,13 @@ export function SiteNav() {
             </button>
           </div>
         </nav>
+
+        {/* Read-position gauge. scaleX on a motion value: no re-render, no layout. */}
+        <motion.span
+          aria-hidden="true"
+          style={{ scaleX: scrollYProgress }}
+          className="absolute inset-x-0 bottom-0 h-px origin-left bg-accent-fill"
+        />
       </header>
 
       <AnimatePresence>
@@ -257,23 +328,24 @@ export function SiteNav() {
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="fixed inset-0 z-40 flex flex-col justify-center bg-ink px-6 pt-20 lg:hidden"
           >
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col">
               {sections.map((section, i) => (
                 <motion.li
                   key={section.id}
-                  initial={{ opacity: 0, x: reduced ? 0 : -20 }}
+                  initial={{ opacity: 0, x: reduced ? 0 : -16 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: reduced ? 0 : 0.05 + i * 0.05 }}
+                  transition={{ delay: reduced ? 0 : 0.05 + i * 0.04 }}
+                  className="border-b border-line last:border-b-0"
                 >
                   <a
                     href={`#${section.id}`}
                     onClick={close}
-                    className="flex items-baseline gap-4 py-3"
+                    className="flex items-center gap-5 py-4"
                   >
                     <span className="font-mono text-xs text-accent">
                       {section.index}
                     </span>
-                    <span className="font-display text-4xl font-bold uppercase tracking-tight">
+                    <span className="type-wide-md text-3xl uppercase">
                       {section.label}
                     </span>
                   </a>
@@ -281,14 +353,14 @@ export function SiteNav() {
               ))}
             </ul>
 
-            <div className="mt-12 flex flex-wrap gap-3">
+            <div className="mt-10 flex flex-wrap gap-2">
               {profile.socials.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}
                   target={social.icon === "mail" ? undefined : "_blank"}
                   rel="noreferrer"
-                  className="rounded-full border border-line px-4 py-2 text-sm text-muted"
+                  className="type-label rounded-sharp border border-line px-4 py-3 text-muted"
                 >
                   {social.label}
                 </a>

@@ -15,12 +15,12 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#d6ff3f",
-          color: "#0a0a0b",
-          fontSize: 30,
+          background: "#ff6b2c",
+          color: "#14110e",
+          fontSize: 28,
           fontWeight: 700,
-          letterSpacing: -1,
-          borderRadius: 14,
+          letterSpacing: 0,
+          borderRadius: 4,
         }}
       >
         {profile.initials}

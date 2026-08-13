@@ -1,29 +1,37 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Inter, JetBrains_Mono } from "next/font/google";
+import { Archivo, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { profile } from "@/content/profile";
 import { ThemeScript } from "@/components/theme-script";
 import "./globals.css";
 
-// Only the weights actually referenced in the markup — each one is a separate
-// download, so unused weights are pure waste.
-const display = Bricolage_Grotesque({
-  variable: "--font-display",
+/**
+ * Three faces, two voices. Archivo is a highway-gothic grotesk with a real
+ * `wdth` axis — the display type is set expanded, which is where the panel
+ * character comes from. IBM Plex Sans and Mono share a skeleton and were drawn
+ * for technical documentation, so a mono readout sits optically level with the
+ * sans paragraph beside it.
+ *
+ * The variable cuts are one file each; only Mono ships as static weights, and
+ * only the two actually used.
+ */
+const display = Archivo({
+  variable: "--font-display-var",
   subsets: ["latin"],
   display: "swap",
-  weight: ["600", "700", "800"],
+  axes: ["wdth"],
 });
 
-const sans = Inter({
-  variable: "--font-sans-var",
+const sans = IBM_Plex_Sans({
+  variable: "--font-body-var",
   subsets: ["latin"],
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const mono = IBM_Plex_Mono({
   variable: "--font-mono-var",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400"],
+  weight: ["400", "500"],
 });
 
 const title = `${profile.name} — Web Analyst & Data Science`;
@@ -73,8 +81,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
-    { media: "(prefers-color-scheme: light)", color: "#fbfbf8" },
+    { media: "(prefers-color-scheme: dark)", color: "#14110e" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f2e9" },
   ],
   colorScheme: "dark light",
 };
