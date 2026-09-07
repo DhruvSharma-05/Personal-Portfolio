@@ -1,0 +1,446 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   PALETTE — "technical instrument"
+   Warm graphite base, one signal colour (amber) and one trace colour (cyan),
+   the pairing an analogue panel would use. Dark-first; the light theme swaps
+   the same semantic slots so components never branch on the theme itself.
+   ========================================================================== */
+
+:root {
+  --ink: #14110e;
+  --surface: #1b1713;
+  --surface-2: #241f19;
+  --line: #322b23;
+  --line-strong: #4b4136;
+  --text: #f4ede3;
+  --muted: #a89a89;
+
+  /* `accent` is the text-safe tone; `accent-fill` is the chip/button surface.
+     They are identical here and must NOT be in the light theme — see below. */
+  --accent: #ff6b2c; /* 6.6:1 on --ink */
+  --accent-fill: #ff6b2c;
+  --accent-ink: #14110e; /* 6.6:1 on --accent-fill */
+  --accent-soft: rgba(255, 107, 44, 0.12);
+
+  /* Secondary. Decorative plotting, rails and readouts only — never a second
+     call to action, or the panel stops having one signal. */
+  --trace: #58c7c0; /* 9.3:1 on --ink */
+  --trace-soft: rgba(88, 199, 192, 0.12);
+
+  --error: #ff8b7a; /* 8.3:1 on --ink */
+
+  /* Drafting grid. Two weights: every cell, then every fourth. */
+  --grid: rgba(244, 237, 227, 0.055);
+  --grid-major: rgba(244, 237, 227, 0.1);
+  --grain-opacity: 0.05;
+}
+
+:root[data-theme="light"] {
+  --ink: #f7f2e9;
+  --surface: #fffdf8;
+  --surface-2: #efe8db;
+  --line: #ddd3c2;
+  --line-strong: #bdb09a;
+  --text: #17130e;
+  --muted: #5e564b; /* 6.5:1 on --ink */
+
+  /* Amber type on warm paper measures 2.6:1 — unreadable. The text tone drops
+     to a burnt rust at 6.2:1 while the fill stays bright for surfaces. */
+  --accent: #9c3a10; /* 6.2:1 on --ink */
+  --accent-fill: #e85d1f;
+  --accent-ink: #14110e; /* 5.4:1 on --accent-fill */
+  --accent-soft: rgba(232, 93, 31, 0.14);
+
+  --trace: #0f6b66; /* 5.7:1 on --ink */
+  --trace-soft: rgba(15, 107, 102, 0.12);
+
+  --error: #b3261e; /* 5.9:1 on --ink */
+
+  --grid: rgba(23, 19, 14, 0.05);
+  --grid-major: rgba(23, 19, 14, 0.09);
+  --grain-opacity: 0.025;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fill: var(--accent-fill);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-trace: var(--trace);
+  --color-trace-soft: var(--trace-soft);
+  --color-error: var(--error);
+  --color-grid: var(--grid);
+  --color-grid-major: var(--grid-major);
+
+  /* Archivo carries a real `wdth` axis, driven through the `type-*` utilities
+     below. IBM Plex Sans and Mono share a skeleton, so metadata set in mono
+     lines up optically with body copy set in sans. */
+  --font-display: var(--font-display-var), "Archivo", system-ui, sans-serif;
+  --font-sans: var(--font-body-var), "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: var(--font-mono-var), "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Panels are milled, not moulded. 2px is the largest radius on the site. */
+  --radius-sharp: 2px;
+
+  /* Fluid display scale. Expanded Archivo is wide, so the ceilings are lower
+     than a normal-width face would need. */
+  --text-display-sm: clamp(2rem, 5vw, 3.25rem);
+  --text-display: clamp(2.5rem, 9vw, 6rem);
+  --text-display-lg: clamp(2.75rem, 12.5vw, 9.5rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Offset for the fixed header when jumping to #anchors. */
+    scroll-padding-top: 6rem;
+    background-color: var(--color-ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    /* Kerning and default ligatures on, always. */
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 0.94;
+    text-wrap: balance;
+    hyphens: none;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Numeric readouts must not reflow as digits change. */
+  dd,
+  time,
+  [data-readout] {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  ::selection {
+    /* The fill tone, not the text tone — selected text sits *on* this. */
+    background-color: var(--color-accent-fill);
+    color: var(--color-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 0;
+  }
+
+  /* Only the fallback for browsers without :focus-visible support. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink);
+    border-left: 1px solid var(--color-line);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 4px solid var(--color-ink);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-fill);
+  }
+}
+
+/* ==========================================================================
+   TYPE UTILITIES
+   Archivo's `wdth` axis is addressed through `font-variation-settings` rather
+   than `font-stretch`, because next/font does not emit a `font-stretch` range
+   descriptor on the generated @font-face — `font-stretch: 125%` would silently
+   do nothing. Setting the axis directly always works, but it also overrides
+   `font-weight`, so each utility carries both axes.
+   ========================================================================== */
+
+@utility type-wide {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "wdth" 118,
+    "wght" 800;
+  letter-spacing: -0.025em;
+}
+
+@utility type-wide-md {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "wdth" 110,
+    "wght" 700;
+  letter-spacing: -0.02em;
+}
+
+@utility type-panel {
+  font-family: var(--font-display);
+  font-variation-settings:
+    "wdth" 100,
+    "wght" 700;
+  letter-spacing: -0.01em;
+}
+
+/* ALL CAPS is always letterspaced — caps set solid read as a grey rectangle. */
+@utility type-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SURFACE UTILITIES
+   ========================================================================== */
+
+/* Drafting grid. Two stacked gradient pairs — fine cells, heavier every 4th.
+   Static: no animation, no canvas, no request. */
+@utility grid-field {
+  background-image:
+    linear-gradient(to right, var(--color-grid-major) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid-major) 1px, transparent 1px),
+    linear-gradient(to right, var(--color-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-grid) 1px, transparent 1px);
+  background-size:
+    calc(var(--cell, 2.5rem) * 4) calc(var(--cell, 2.5rem) * 4),
+    calc(var(--cell, 2.5rem) * 4) calc(var(--cell, 2.5rem) * 4),
+    var(--cell, 2.5rem) var(--cell, 2.5rem),
+    var(--cell, 2.5rem) var(--cell, 2.5rem);
+}
+
+/* Registration marks that print themselves onto a panel on hover. Two opposing
+   corners is enough to read as a crop mark; four looks like a selection box. */
+@utility ticks {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    pointer-events: none;
+    border-color: var(--color-accent);
+    opacity: 0;
+    transition: opacity 0.2s var(--ease-out-expo);
+  }
+
+  &::before {
+    top: -1px;
+    left: -1px;
+    border-top: 1.5px solid;
+    border-left: 1.5px solid;
+  }
+
+  &::after {
+    right: -1px;
+    bottom: -1px;
+    border-right: 1.5px solid;
+    border-bottom: 1.5px solid;
+  }
+
+  &:hover::before,
+  &:hover::after,
+  &:focus-within::before,
+  &:focus-within::after {
+    opacity: 1;
+  }
+}
+
+/* A measuring edge: repeating ticks along a rule, like a ruler's face. */
+@utility tick-rule {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--color-line-strong) 0 1px,
+    transparent 1px var(--tick-gap, 7px)
+  );
+}
+
+/* Film grain over the whole page. Pure CSS — no image request. */
+@utility grain {
+  position: fixed;
+  inset: -50%;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 8s steps(10) infinite;
+}
+
+/* An accent underline that draws on hover. */
+@utility link-underline {
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.4s var(--ease-out-expo);
+
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+@utility text-balance-none {
+  text-wrap: initial;
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   Transform and opacity only, so every one of these stays on the compositor.
+   ========================================================================== */
+
+@keyframes grain-shift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  30% {
+    transform: translate(3%, -15%);
+  }
+  50% {
+    transform: translate(12%, 9%);
+  }
+  70% {
+    transform: translate(9%, 4%);
+  }
+  90% {
+    transform: translate(-1%, 7%);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  /* The track renders its children twice, so -50% is one seamless loop. */
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Oscilloscope sweep across the hero. Replaces the drifting blur orbs: same
+   job — atmosphere — without the 120px blur radius or the liquid shape. */
+@keyframes sweep {
+  0% {
+    transform: translateY(-2%);
+    opacity: 0;
+  }
+  8%,
+  82% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(102%);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ==========================================================================
+   MOTION PREFERENCES
+   Honoured globally so no component has to remember to.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .grain {
+    animation: none;
+  }
+}
+
+@media print {
+  .grain,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  /* No stranded heading at the foot of a page, no single-line spill onto the next. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+
+  p,
+  li {
+    orphans: 2;
+    widows: 2;
+  }
+}
