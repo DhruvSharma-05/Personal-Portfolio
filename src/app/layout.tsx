@@ -34,9 +34,9 @@ const mono = IBM_Plex_Mono({
   weight: ["400", "500"],
 });
 
-const title = `${profile.name} — Web Analyst & Data Science`;
+const title = `${profile.name} — AI Engineer & Data Science`;
 const description =
-  "Web Analyst and Computer Science student at NMIMS Chandigarh. Power BI dashboards, Python automation, machine learning projects and UI/UX design case studies.";
+  "AI Engineer and final-year Computer Science student at NMIMS Chandigarh. Web-scraping infrastructure, LLM-backed data pipelines, on-device inference, machine learning projects and Power BI dashboards.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(profile.siteUrl),
@@ -47,12 +47,13 @@ export const metadata: Metadata = {
   description,
   keywords: [
     "Dhruv Sharma",
-    "Web Analyst",
-    "Data Analyst",
-    "Power BI",
+    "AI Engineer",
+    "Machine Learning Engineer",
+    "Data Engineer",
+    "Web Scraping",
+    "LLM Integration",
     "Python",
-    "Machine Learning",
-    "UI/UX Designer",
+    "Power BI",
     "NMIMS Chandigarh",
     "Portfolio",
   ],

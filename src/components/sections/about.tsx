@@ -1,4 +1,6 @@
 import { profile } from "@/content/profile";
+import { skillGroups } from "@/content/skills";
+import { Icon } from "@/components/ui/icon";
 import { Reveal } from "@/components/ui/reveal";
 import { Panel, PanelHead, SpecRow } from "@/components/ui/panel";
 import { Section, SectionHeader } from "@/components/ui/section";
@@ -18,7 +20,6 @@ export function About() {
     <Section id="about">
       <SectionHeader
         id="about"
-        index="01"
         title="About"
         accent="me"
         lede={profile.headline}
@@ -30,28 +31,29 @@ export function About() {
         <div className="max-w-[62ch] space-y-6 text-lg leading-relaxed text-muted">
           <Reveal direction="up">
             <p>
-              I’m a Computer Science student at{" "}
-              <span className="text-text">{profile.university}</span>, working at
-              the seam between data and design. As a{" "}
-              <span className="text-text">Web Analyst at Accosoft India</span> I
-              built the Power BI dashboards management actually opened on Monday
-              mornings, and wrote the Python scrapers that stopped anyone having
-              to assemble them by hand.
+              I’m a final-year Computer Science student at{" "}
+              <span className="text-text">{profile.university}</span>, currently
+              an <span className="text-text">AI Engineer Intern at RevClerx</span>,
+              where I work on web-scraping infrastructure, LLM-backed data
+              pipelines and on-device inference.
             </p>
           </Reveal>
           <Reveal direction="up" delay={0.08}>
             <p>
-              The part I care about is the last mile — a model with a good score
-              is worth nothing if the person who needs it can’t read the output.
-              That’s why I keep one foot in UI/UX: same problem, different end of
-              the pipe.
+              Before that I was a{" "}
+              <span className="text-text">Web Analyst at Accosoft India</span>,
+              building the Power BI dashboards management actually opened on
+              Monday mornings and the Python scrapers that stopped anyone having
+              to assemble them by hand. That job is why I care about the last
+              mile: a model with a good score is worth nothing if the person who
+              needs it can’t read the output.
             </p>
           </Reveal>
           <Reveal direction="up" delay={0.16}>
             <p>
-              Right now I’m in my final year, looking for a role where I can own
-              an analytics surface end to end — from the query to the thing
-              someone makes a call on.
+              The through-line is the same at both ends of the pipe — get the
+              data out, get it clean, and put it somewhere a decision can be made
+              from it.
             </p>
           </Reveal>
         </div>
@@ -66,6 +68,64 @@ export function About() {
             </div>
           </Panel>
         </Reveal>
+      </div>
+
+      {/* Toolkit, folded in from what used to be its own section. A tool list
+          is supporting evidence for the prose above, not a headline act. */}
+      <div className="mt-16">
+        <Reveal direction="up">
+          <div className="mb-8 flex items-center gap-4">
+            <h3 className="type-label text-accent">Toolkit</h3>
+            <span
+              aria-hidden="true"
+              className="tick-rule h-1.5 flex-1 opacity-60"
+            />
+            <span className="type-label whitespace-nowrap text-muted">
+              Where I’ve used it
+            </span>
+          </div>
+        </Reveal>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          {skillGroups.map((group, i) => (
+            <Reveal key={group.id} direction="up" delay={(i % 2) * 0.06}>
+              <Panel as="article" className="h-full">
+                <PanelHead
+                  label={group.title}
+                  trailing={String(group.skills.length).padStart(2, "0")}
+                />
+                <div className="flex items-start gap-4 p-5 sm:p-6">
+                  <span className="grid size-10 shrink-0 place-items-center rounded-sharp border border-line bg-surface-2 text-accent">
+                    <Icon name={group.icon} className="size-4.5" />
+                  </span>
+
+                  <ul className="min-w-0 flex-1 divide-y divide-line">
+                    {group.skills.map((skill) => (
+                      <li
+                        key={skill.name}
+                        className="flex flex-wrap items-baseline gap-x-3 gap-y-1 py-2.5 first:pt-0 last:pb-0"
+                      >
+                        <span className="text-sm font-medium">{skill.name}</span>
+                        {/* `note` only exists where real work backs it up. */}
+                        {skill.note ? (
+                          <>
+                            <span
+                              aria-hidden="true"
+                              className="hidden min-w-6 flex-1 translate-y-[-0.25em] border-b border-dotted border-line-strong sm:block"
+                            />
+                            <span className="font-mono text-xs text-muted">
+                              {skill.note}
+                            </span>
+                          </>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Panel>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </Section>
   );

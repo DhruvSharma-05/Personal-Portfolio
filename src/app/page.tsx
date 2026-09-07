@@ -6,8 +6,7 @@ import { Hero } from "@/components/sections/hero";
 import { About } from "@/components/sections/about";
 import { Experience } from "@/components/sections/experience";
 import { Projects } from "@/components/sections/projects";
-import { Design } from "@/components/sections/design";
-import { Skills } from "@/components/sections/skills";
+import { Services } from "@/components/sections/services";
 import { Contact } from "@/components/sections/contact";
 
 /**
@@ -21,7 +20,7 @@ const jsonLd = {
   url: profile.siteUrl,
   email: `mailto:${profile.email}`,
   telephone: profile.phone,
-  jobTitle: "Web Analyst",
+  jobTitle: "AI Engineer",
   description: profile.summary,
   address: {
     "@type": "PostalAddress",
@@ -34,12 +33,14 @@ const jsonLd = {
     name: profile.university,
   },
   knowsAbout: [
-    "Data Analytics",
-    "Power BI",
-    "Python",
+    "Artificial Intelligence",
     "Machine Learning",
+    "Web Scraping",
+    "Data Engineering",
+    "Python",
+    "LLM Integration",
+    "Power BI",
     "SQL",
-    "UI/UX Design",
   ],
   sameAs: profile.socials
     .filter((s) => s.icon !== "mail")
@@ -59,8 +60,7 @@ export default function Home() {
         <About />
         <Experience />
         <Projects />
-        <Design />
-        <Skills />
+        <Services />
         <Contact />
       </main>
       <SiteFooter />

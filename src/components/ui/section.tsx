@@ -36,18 +36,20 @@ export function Section({
  */
 export function SectionHeader({
   id,
-  index,
   title,
   accent,
   lede,
 }: {
   id: string;
-  index: string;
   title: string;
   /** Rendered in the accent colour, on the same line. */
   accent?: string;
   lede?: string;
 }) {
+  // Derived, never passed in: cutting or reordering a section renumbers every
+  // plate, the nav and the left rail from the one list in `profile.ts`.
+  const index = sections.find((section) => section.id === id)?.index ?? "";
+
   return (
     <header className="mb-14 md:mb-20">
       <Reveal direction="up">

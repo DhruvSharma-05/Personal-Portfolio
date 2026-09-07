@@ -2,7 +2,8 @@ import type { Certification, SkillGroup } from "./types";
 
 /**
  * Deliberately no percentage bars. A self-assigned "Python 90%" is unverifiable
- * and reads as filler; grounded context reads as experience.
+ * and reads as filler; grounded context reads as experience. `note` is set only
+ * where a specific piece of work backs the claim up.
  */
 export const skillGroups: SkillGroup[] = [
   {
@@ -10,7 +11,7 @@ export const skillGroups: SkillGroup[] = [
     title: "Languages",
     icon: "code",
     skills: [
-      { name: "Python", note: "Primary language for analysis and automation" },
+      { name: "Python", note: "Primary language across every role" },
       { name: "SQL", note: "Query and schema work at Accosoft" },
       { name: "JavaScript" },
       { name: "TypeScript" },
@@ -18,53 +19,61 @@ export const skillGroups: SkillGroup[] = [
     ],
   },
   {
-    id: "data",
-    title: "Data & ML",
+    id: "ai",
+    title: "AI & ML",
     icon: "library",
     skills: [
-      { name: "Pandas" },
-      { name: "NumPy" },
+      { name: "LLM Integration", note: "Inference and enrichment at RevClerx" },
       { name: "Scikit-learn", note: "Regression and churn models" },
       { name: "XGBoost" },
       { name: "SHAP", note: "Model interpretability" },
-      { name: "Matplotlib" },
-      { name: "Seaborn" },
-      { name: "Plotly" },
+      { name: "Edge AI", note: "On-device inference optimisation" },
+      { name: "Pandas" },
+      { name: "NumPy" },
     ],
   },
   {
-    id: "tools",
-    title: "Tools & Platforms",
+    id: "infra",
+    title: "Systems & Infra",
+    icon: "cloud",
+    skills: [
+      { name: "FastAPI", note: "Pipeline orchestration" },
+      { name: "gRPC" },
+      { name: "Kafka" },
+      { name: "Redis Streams" },
+      { name: "WebAssembly", note: "Browser-side compute offloading" },
+      { name: "Docker" },
+      { name: "Kubernetes" },
+      { name: "AWS", note: "Cloud Foundations certified" },
+    ],
+  },
+  {
+    id: "data",
+    title: "Data & Delivery",
     icon: "wrench",
     skills: [
       { name: "Power BI", note: "Production dashboards at Accosoft" },
+      { name: "Streamlit", note: "Dashboard delivery layer" },
+      { name: "Flask" },
+      { name: "MySQL" },
+      { name: "MongoDB" },
+      { name: "Matplotlib, Seaborn & Plotly" },
       { name: "Excel", note: "Modelling and data cleaning" },
-      { name: "Figma", note: "All design case studies" },
+      { name: "Figma", note: "Interface and event design work" },
       { name: "Git & GitHub" },
       { name: "n8n", note: "No-code workflow automation" },
       { name: "Adobe Creative Suite" },
     ],
   },
-  {
-    id: "infra",
-    title: "Frameworks & Infra",
-    icon: "cloud",
-    skills: [
-      { name: "Streamlit", note: "Dashboard delivery layer" },
-      { name: "Flask" },
-      { name: "React" },
-      { name: "MySQL" },
-      { name: "MongoDB" },
-      { name: "AWS", note: "Cloud Foundations certified" },
-      { name: "Vercel" },
-    ],
-  },
 ];
 
 /**
- * `credentialUrl` drives the "Verify" affordance. The previous site printed a
+ * `credentialUrl` drives the "Verify" affordance. The original site printed a
  * "Verified" badge next to placeholder IDs like `AWS-12345`; a badge nobody can
  * check is worse than no badge. Paste the real share links here to light them up.
+ *
+ * `date` is optional and omitted where the award date isn't recorded — an
+ * invented year is the same failure mode as an invented credential ID.
  */
 export const certifications: Certification[] = [
   {
@@ -82,17 +91,40 @@ export const certifications: Certification[] = [
     skills: ["Data Analysis", "Visualization", "SQL", "R"],
   },
   {
-    id: "powerbi",
-    name: "Data-Driven Decisions with Power BI",
-    issuer: "Microsoft",
-    date: "2024",
-    skills: ["Power BI", "DAX", "Data Modeling", "Business Intelligence"],
+    id: "sql-data-science",
+    name: "SQL for Data Science",
+    issuer: "Coursera",
+    skills: ["SQL", "Data Modelling", "Querying"],
   },
   {
-    id: "ibm-python",
-    name: "Python for Data Science",
-    issuer: "IBM",
+    id: "powerbi",
+    name: "Data-Driven Decisions with Power BI",
+    issuer: "Coursera",
     date: "2024",
-    skills: ["Python", "Data Science", "Jupyter"],
+    skills: ["Power BI", "DAX", "Business Intelligence"],
+  },
+  {
+    id: "ibm-excel",
+    name: "Excel Basics for Data Analysis",
+    issuer: "IBM",
+    skills: ["Excel", "Data Cleaning", "Spreadsheet Analysis"],
+  },
+  {
+    id: "meta-marketing-analytics",
+    name: "Marketing Analytics Foundation",
+    issuer: "Meta",
+    skills: ["Marketing Analytics", "Attribution", "Measurement"],
+  },
+  {
+    id: "chatgpt-guide",
+    name: "ChatGPT Complete Guide",
+    issuer: "Udemy",
+    skills: ["Prompt Engineering", "LLM Tooling"],
+  },
+  {
+    id: "design-thinking",
+    name: "Design Thinking for Innovation",
+    issuer: "Coursera",
+    skills: ["Design Thinking", "Problem Framing", "Ideation"],
   },
 ];

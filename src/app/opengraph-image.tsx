@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { profile } from "@/content/profile";
 
-export const alt = `${profile.name} — Web Analyst & Data Science`;
+export const alt = `${profile.name} — AI Engineer & Data Science`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -83,7 +83,7 @@ export default function OpengraphImage() {
           }}
         >
           <div style={{ display: "flex" }}>
-            Web Analyst · Data Science · UI/UX
+            AI Engineer · Data · Machine Learning
           </div>
           <div style={{ display: "flex" }}>{profile.location}</div>
         </div>

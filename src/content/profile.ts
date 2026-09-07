@@ -1,4 +1,5 @@
 import type { Profile, SectionMeta } from "./types";
+import { services } from "./services";
 
 export const profile: Profile = {
   name: "Dhruv Sharma",
@@ -6,15 +7,15 @@ export const profile: Profile = {
   lastName: "Sharma",
   initials: "DS",
   roles: [
-    "Web Analyst",
-    "Data Science Enthusiast",
-    "UI/UX Designer",
+    "AI Engineer",
+    "Data & ML Pipelines",
+    "Web Scraping Systems",
     "Python Developer",
-    "Power BI Specialist",
+    "Web Analyst",
   ],
-  headline: "I turn messy data into decisions people actually make.",
+  headline: "I build the systems that get raw web data to a model — and the model to a decision.",
   summary:
-    "Computer Science student at SVKM’s NMIMS Chandigarh. I build dashboards, automate the boring parts of analytics, and design the interfaces that make the numbers land.",
+    "Final-year Computer Science student at SVKM’s NMIMS Chandigarh, currently an AI Engineer Intern at RevClerx. I work on web-scraping infrastructure, LLM-backed data pipelines and on-device inference — plus the dashboards that make the output usable.",
   email: "dhruv.sharma1592@gmail.com",
   phone: "+91 9855560324",
   location: "Panchkula, Haryana, India",
@@ -45,19 +46,31 @@ export const profile: Profile = {
   ],
 };
 
-export const sections: SectionMeta[] = [
-  { id: "about", index: "01", label: "About" },
-  { id: "experience", index: "02", label: "Experience" },
-  { id: "work", index: "03", label: "Work" },
-  { id: "design", index: "04", label: "Design" },
-  { id: "skills", index: "05", label: "Skills" },
-  { id: "contact", index: "06", label: "Contact" },
+/**
+ * Section order and numbering.
+ *
+ * Indices are derived, not written by hand, so removing or inserting a section
+ * renumbers the plate headers, the nav and the left rail in one place. Services
+ * only appears once `content/services.ts` has real entries — an empty section
+ * would otherwise leave a nav link pointing at nothing.
+ */
+const sectionOrder: Omit<SectionMeta, "index">[] = [
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "work", label: "Work" },
+  ...(services.length > 0 ? [{ id: "services", label: "Services" }] : []),
+  { id: "contact", label: "Contact" },
 ];
+
+export const sections: SectionMeta[] = sectionOrder.map((section, i) => ({
+  ...section,
+  index: String(i + 1).padStart(2, "0"),
+}));
 
 /** Headline numbers. Each one must be countable from the content below. */
 export const stats = [
   { value: 5, suffix: "", label: "Shipped projects" },
-  { value: 5, suffix: "", label: "Design case studies" },
-  { value: 4, suffix: "", label: "Certifications" },
+  { value: 8, suffix: "", label: "Certifications" },
+  { value: 2, suffix: "", label: "Industry roles" },
   { value: 1, suffix: "", label: "Hackathon win" },
 ];

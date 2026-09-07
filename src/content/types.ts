@@ -56,16 +56,24 @@ export type Profile = {
   socials: Social[];
 };
 
+/** Optional public artefact backing an entry. No URL → no link rendered. */
+export type EntryLink = {
+  label: string;
+  href: string;
+  kind: "figma" | "drive" | "external";
+};
+
 export type Experience = {
   id: string;
   title: string;
   company: string;
   location: string;
   duration: string;
-  kind: "Work" | "Leadership" | "Creative";
+  kind: "Work" | "Internship" | "Leadership" | "Creative" | "Volunteer";
   highlights: string[];
   technologies: string[];
   icon: IconKey;
+  link?: EntryLink;
 };
 
 export type Project = {
@@ -92,20 +100,25 @@ export type Achievement = {
   award: string;
   date: string;
   technologies: string[];
+  link?: EntryLink;
 };
 
-export type DesignProject = {
+/**
+ * Freelance offer. `services.ts` ships empty on purpose — the Services section
+ * and its enquiry flow render nothing until there is real work to describe.
+ * Never fill `rateBand` with a guess: a published rate is a commitment.
+ */
+export type Service = {
   id: string;
   title: string;
-  description: string;
-  type: string;
-  year: string;
-  tools: string[];
-  features: string[];
+  summary: string;
+  /** What the client actually receives. */
+  deliverables: string[];
+  /** Free text, e.g. "from ₹X / project" or "hourly, on request". */
+  rateBand?: string;
+  /** Typical turnaround, e.g. "2–3 weeks". */
+  leadTime?: string;
   icon: IconKey;
-  href?: string;
-  linkLabel: string;
-  linkKind: "figma" | "drive";
 };
 
 export type SkillGroup = {
@@ -120,7 +133,8 @@ export type Certification = {
   id: string;
   name: string;
   issuer: string;
-  date: string;
+  /** Optional: omitted rather than guessed when the award date isn't recorded. */
+  date?: string;
   skills: string[];
   /** Public verification URL. Renders a "Verify" link only when present. */
   credentialUrl?: string;

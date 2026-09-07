@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { profile, sections } from "@/content/profile";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import { Mail } from "lucide-react";
@@ -26,12 +27,12 @@ export function SiteFooter() {
       <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-12 sm:px-10">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <a href="#top" className="inline-flex items-center gap-3">
+            <Link href="/#top" className="inline-flex items-center gap-3">
               <span className="grid size-9 place-items-center rounded-sharp bg-accent-fill font-mono text-xs font-medium tracking-wider text-accent-ink">
                 {profile.initials}
               </span>
               <span className="type-panel text-base">{profile.name}</span>
-            </a>
+            </Link>
             <p className="mt-5 max-w-[46ch] leading-relaxed text-muted">
               {profile.headline}
             </p>
@@ -49,7 +50,7 @@ export function SiteFooter() {
               {sections.map((section) => (
                 <li key={section.id}>
                   <a
-                    href={`#${section.id}`}
+                    href={`/#${section.id}`}
                     className="group flex items-baseline gap-3 text-sm text-muted transition-colors hover:text-text"
                   >
                     {/* Recessive by size and face, not by contrast — at

@@ -4,6 +4,7 @@ import { useId, useState, type FormEvent } from "react";
 import emailjs from "@emailjs/browser";
 import { ArrowRight, Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import { profile } from "@/content/profile";
+import { enquiryKinds } from "@/content/services";
 import { GitHubIcon, LinkedInIcon } from "@/components/ui/brand-icons";
 import { Reveal } from "@/components/ui/reveal";
 import { Panel, PanelHead } from "@/components/ui/panel";
@@ -51,6 +52,7 @@ function Field({
   id,
   label,
   type = "text",
+  options,
   ...rest
 }: {
   id: string;
@@ -60,6 +62,8 @@ function Field({
   required?: boolean;
   placeholder?: string;
   autoComplete?: string;
+  /** Present → renders a <select> of these values instead of an input. */
+  options?: readonly string[];
 }) {
   // 16px input text: anything smaller makes iOS zoom the viewport on focus.
   const shared =
@@ -70,7 +74,15 @@ function Field({
       <label htmlFor={id} className="type-label mb-2 block text-muted">
         {label}
       </label>
-      {type === "textarea" ? (
+      {options ? (
+        <select id={id} className={shared} defaultValue={options[0]} {...rest}>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      ) : type === "textarea" ? (
         <textarea id={id} rows={5} className={`${shared} resize-y`} {...rest} />
       ) : (
         <input id={id} type={type} className={shared} {...rest} />
@@ -110,7 +122,12 @@ export function Contact() {
         {
           user_name: String(data.get("user_name") ?? "").trim(),
           user_email: String(data.get("user_email") ?? "").trim(),
-          subject: String(data.get("subject") ?? "").trim(),
+          subject: [
+            String(data.get("enquiry_kind") ?? "").trim(),
+            String(data.get("subject") ?? "").trim(),
+          ]
+            .filter(Boolean)
+            .join(" — "),
           message: String(data.get("message") ?? "").trim(),
           current_time: new Date().toLocaleString(),
         },
@@ -131,7 +148,6 @@ export function Contact() {
     <Section id="contact">
       <SectionHeader
         id="contact"
-        index="06"
         title="Let’s"
         accent="talk"
         lede="Roles, collaborations, or a question about something above — all welcome."
@@ -246,14 +262,24 @@ export function Contact() {
                 />
               </div>
 
-              <div className="mt-5 grid gap-5">
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                <Field
+                  id={`${uid}-kind`}
+                  name="enquiry_kind"
+                  label="This is about"
+                  options={enquiryKinds}
+                  required
+                />
                 <Field
                   id={`${uid}-subject`}
                   name="subject"
                   label="Subject"
-                  placeholder="What’s this about?"
+                  placeholder="One line of detail"
                   required
                 />
+              </div>
+
+              <div className="mt-5">
                 <Field
                   id={`${uid}-message`}
                   name="message"

@@ -31,7 +31,8 @@ Restarting costs the conversation context. This file is that context.
 | Lint | passes, 0 warnings |
 | Dev | `npm run dev` → `http://localhost:3000` |
 
-**The redesign in §5 has been done.** Direction, chosen by the user from three
+**Two rounds are done: the redesign in §5, then the September 2026 content and
+structure pass in §12.** Direction, chosen by the user from three
 options: **Technical Instrument** — dark-first warm palette, choreographed
 motion, reskin + relayout with the section order and the content layer
 untouched. See §11 for what that means concretely.
@@ -72,11 +73,11 @@ Tailwind stack, "bold & expressive" visual direction, and all four fix areas
 src/
   content/          ← ALL copy and data lives here. Components never hardcode copy.
     types.ts          shapes; icons are string keys, not JSX
-    profile.ts        name, roles, socials, section list, headline stats
-    experience.ts     roles + recognition
-    projects.ts       engineering work
-    design.ts         design case studies
+    profile.ts        name, roles, socials, DERIVED section list, headline stats
+    experience.ts     roles, leadership, volunteering + recognition
+    projects.ts       engineering work (each id doubles as a /work/<slug>)
     skills.ts         skill groups + certifications
+    services.ts       freelance offer — SHIPS EMPTY, see §12
   components/
     sections/       one file per page section
     ui/             reveal, section, marquee, count-up, icon, brand-icons
@@ -86,6 +87,7 @@ src/
   app/
     layout.tsx      fonts, metadata, viewport
     page.tsx        section order + JSON-LD Person schema
+    work/[slug]/    per-project case studies, prerendered
     globals.css     ALL design tokens live here (Tailwind v4 @theme)
     opengraph-image.tsx / icon.tsx    generated at build time
     robots.ts / sitemap.ts
@@ -93,6 +95,7 @@ src/
 
 **A redesign should mostly touch `globals.css` + `components/`. It should not need
 to touch `content/`** — that separation is the main win of the rebuild, keep it.
+A *content* change is the mirror image: it should only touch `content/`.
 
 ---
 
@@ -132,6 +135,10 @@ If the redesign changes them, change them *knowingly*.
      **Never re-add a "Verified" badge without a real URL behind it.**
    - Testimonials were fabricated and were deleted. Don't bring them back.
    - Design projects with no public link render no CTA rather than `href="#"`.
+   - `Certification.date` is optional and omitted where the date isn't recorded.
+     An invented year is the same failure mode as an invented credential ID.
+   - `services.ts` ships as an empty array. The Services section, its nav entry
+     and its plate number all appear together the moment it has real entries.
 
 7. **Zero third-party requests.** Fonts self-hosted via `next/font`, icons are
    `lucide-react` + inline SVG brand marks. The old site pulled from cdnjs, unpkg,
@@ -314,3 +321,111 @@ measured contrast ratio in a comment; keep that up to date if you change one.
 **Motion.** Choreographed: one staggered hero load (~90ms steps), scroll-triggered
 section entrances with 18px travel, counters on view, a 9s sweep line, a 50s
 telemetry marquee. Transform and opacity only.
+
+
+---
+
+## 12. September 2026 — content and structure pass
+
+Driven by an updated resume. The user also said they had **started freelancing**,
+which appears nowhere in that resume, so the Services work is scaffolded but not
+populated (see "Still blocked" below).
+
+### Positioning changed
+
+The site led with "Web Analyst & Data Science". It now leads with **AI Engineer**,
+because RevClerx is the current and most substantial role. Changed: page title,
+meta description, keywords, the OG card, `jobTitle` and `knowsAbout` in the
+Person JSON-LD, `profile.roles`, `profile.headline`, `profile.summary`, and the
+About prose.
+
+### Structure changed
+
+| | Before | After |
+| --- | --- | --- |
+| Sections | About · Experience · Work · Design · Skills · Contact | About · Experience · Work · Contact |
+| Design section | 5 case studies | **cut** |
+| Skills section | its own section | **merged into About** as "Toolkit" |
+| Certifications | inside Skills | moved into Experience |
+| Case studies | none | `/work/<slug>`, one per project, prerendered |
+
+**Section numbering is now derived.** `profile.ts` builds `sections` from an
+order list and computes `01`…`0n`; `SectionHeader` looks its own index up by
+`id` rather than taking one as a prop. Cutting or reordering a section renumbers
+the plate headers, the nav and the left rail from that one list. Don't reintroduce
+a hard-coded `index` prop.
+
+### What the Design cut lost, and what was kept
+
+`content/design.ts` is deleted — recover with
+`git show f77013f:src/content/design.ts`. Three Figma links died with it (Nike
+redesign, Headphone Store, NMIMS Canteen). Two were **preserved by moving them
+onto the entries they actually belong to**:
+
+- the Drive collection → the Creative Designer and Anviksha experience entries
+- the BUILD Figma file → the Unstop hackathon achievement (it is literally the
+  artefact from that hackathon)
+
+`EntryLink` on `Experience` and `Achievement` is what carries them.
+
+### Case studies
+
+`app/work/[slug]/page.tsx`. `params` is a **Promise** in Next 16 and must be
+awaited. `PageProps<'/work/[slug]'>` is a Next-generated global that only exists
+after a build, so params are typed explicitly — same reason `layout.tsx` does.
+`dynamicParams = false` makes an unknown slug a static 404 and keeps the route
+compatible with `output: "export"`.
+
+Each page carries its own title, description, canonical, OG tags and
+`SoftwareSourceCode` JSON-LD, and gets a `sitemap.ts` entry.
+
+The home card's **title** is the link, using `after:absolute after:inset-0` to
+make the whole panel one hit target; the action buttons sit at `relative z-10`
+so they stay independently clickable through that overlay.
+
+Footer links are now `/#<section>` rather than `#<section>`, so they resolve
+from `/work/<slug>` too. The footer's home link uses `next/link` —
+`@next/next/no-html-link-for-pages` errors on a bare `<a href="/">`.
+
+### Verified
+
+Home + two case studies, dark and light, 1440×900 / 390×844 / 320px:
+
+- 0 console errors, 0 page errors
+- nav renders exactly About · Experience · Work · Contact; plates run 01–04
+- Services correctly absent while `services.ts` is empty
+- all 5 case studies return 200 with correct titles, canonicals and JSON-LD;
+  an unknown slug returns 404; sitemap lists 6 URLs
+- every navigation path round-trips: card button, card title overlay, All work,
+  prev/next, and a footer anchor from a subpage back to `/#experience`
+- reduced motion renders at opacity 1; no horizontal overflow
+- **0 elements below WCAG AA** on either theme across all three pages (the
+  active filter button still reports as a false positive — its fill is painted
+  by a sibling the audit walker can't resolve; the real pair is 6.6:1)
+
+One real bug caught only by screenshotting: the case-study `<h1>` was **clipped**
+at 390px. `overflow-hidden` on the section meant the document-overflow check
+passed while the text was actually cut off. Fixed by stacking the icon above the
+title below `sm` and stepping the title down to `--text-display-sm` there.
+**A document-level overflow check does not catch clipping inside an
+`overflow-hidden` container — compare `scrollWidth` to `clientWidth` on the
+element itself.**
+
+### Still blocked — needs the user
+
+1. **Freelancing has no data.** `content/services.ts` is an empty array with a
+   documented shape. Fill it and the section, its nav entry and its plate number
+   appear automatically. Never invent a `rateBand`.
+2. **RevClerx end date.** The resume says "Jan 2025 - Present" and the site says
+   the same, but the file was named `(old2)` and the user described the
+   internship in the past tense while saying they had started freelancing. If it
+   has ended, `content/experience.ts` and the About prose both need the real date.
+3. **Certification issuers and dates.** Taken from the resume, which gives no
+   dates. Four have `date: "2024"` carried over from the previous build; four
+   have none. The Power BI cert's issuer changed from Microsoft to Coursera to
+   match the resume. No `credentialUrl` is set on any of the eight, so none shows
+   a Verify link.
+4. **The leadership bullets exceed the resume.** The Student Placement
+   Coordinator and Creative Designer entries were written in an earlier session
+   and carry more detail than the resume supports. Left as-is because they
+   shipped and the user has seen them — but they are worth a read-through.

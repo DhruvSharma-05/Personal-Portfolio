@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import Link from "next/link";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { projectFilters, projects } from "@/content/projects";
 import type { Project } from "@/content/types";
@@ -36,7 +37,16 @@ function ProjectCard({ project }: { project: Project }) {
           <span className="grid size-11 shrink-0 place-items-center rounded-sharp border border-line bg-surface-2 text-accent">
             <Icon name={project.icon} className="size-5" />
           </span>
-          <h3 className="type-wide-md text-2xl sm:text-3xl">{project.title}</h3>
+          <h3 className="type-wide-md text-2xl sm:text-3xl">
+            {/* `after:absolute inset-0` makes the whole panel one hit target
+                without nesting the other links inside an outer anchor. */}
+            <Link
+              href={`/work/${project.id}`}
+              className="after:absolute after:inset-0 hover:text-accent"
+            >
+              {project.title}
+            </Link>
+          </h3>
         </div>
 
         <p className="mt-5 max-w-[62ch] leading-relaxed text-muted">
@@ -136,22 +146,21 @@ function ProjectCard({ project }: { project: Project }) {
           ))}
         </ul>
 
-        {/* mt-auto pins the actions to the bottom so cards in a row line up. */}
-        <div className="mt-auto flex flex-wrap gap-3 pt-8">
-          {project.liveUrl ? (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="group/btn inline-flex items-center gap-2 rounded-sharp bg-accent-fill px-5 py-2.5 text-sm font-semibold text-accent-ink transition-opacity duration-150 hover:opacity-90"
-            >
-              Live demo
-              <ArrowRight
-                className="size-4 transition-transform duration-200 group-hover/btn:translate-x-1"
-                aria-hidden="true"
-              />
-            </a>
-          ) : null}
+        {/* mt-auto pins the actions to the bottom so cards in a row line up.
+            `relative z-10` lifts them above the title's full-card overlay so
+            they stay independently clickable. */}
+        <div className="relative z-10 mt-auto flex flex-wrap gap-3 pt-8">
+          <Link
+            href={`/work/${project.id}`}
+            className="group/btn inline-flex items-center gap-2 rounded-sharp bg-accent-fill px-5 py-2.5 text-sm font-semibold text-accent-ink transition-opacity duration-150 hover:opacity-90"
+          >
+            Case study
+            <span className="sr-only"> for {project.title}</span>
+            <ArrowRight
+              className="size-4 transition-transform duration-200 group-hover/btn:translate-x-1"
+              aria-hidden="true"
+            />
+          </Link>
           <a
             href={project.githubUrl}
             target="_blank"
@@ -180,10 +189,9 @@ export function Projects() {
     <Section id="work">
       <SectionHeader
         id="work"
-        index="03"
         title="Selected"
         accent="work"
-        lede="Data pipelines, models and dashboards — each one shipped, each one on GitHub."
+        lede="Data pipelines, models and dashboards — each one shipped, each one on GitHub. Open any card for the full write-up."
       />
 
       <div

@@ -5,7 +5,6 @@ import {
   useEffect,
   useRef,
   useState,
-  useSyncExternalStore,
 } from "react";
 import {
   AnimatePresence,
@@ -13,58 +12,9 @@ import {
   useReducedMotion,
   useScroll,
 } from "motion/react";
-import { ArrowRight, Menu, Moon, Sun, X } from "lucide-react";
+import { ArrowRight, Menu, X } from "lucide-react";
 import { profile, sections } from "@/content/profile";
-
-/**
- * `data-theme` on <html> is the source of truth — it's written by the inline
- * script in <head> before paint. Reading it through `useSyncExternalStore`
- * (rather than mirroring it into state from an effect) keeps React and the DOM
- * from disagreeing, and gives hydration a stable server snapshot.
- */
-function subscribeToTheme(onChange: () => void) {
-  const observer = new MutationObserver(onChange);
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
-  return () => observer.disconnect();
-}
-
-function readTheme(): "dark" | "light" {
-  return document.documentElement.getAttribute("data-theme") === "light"
-    ? "light"
-    : "dark";
-}
-
-function ThemeToggle({ className = "" }: { className?: string }) {
-  const theme = useSyncExternalStore(
-    subscribeToTheme,
-    readTheme,
-    () => "dark" as const,
-  );
-
-  const toggle = () => {
-    const next = theme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
-      className={`grid size-11 place-items-center rounded-sharp border border-line text-muted transition-colors duration-150 hover:border-accent hover:text-accent ${className}`}
-    >
-      {theme === "light" ? (
-        <Sun className="size-4" aria-hidden="true" />
-      ) : (
-        <Moon className="size-4" aria-hidden="true" />
-      )}
-    </button>
-  );
-}
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 /**
  * Position readout down the left margin — the instrument's own scale.
